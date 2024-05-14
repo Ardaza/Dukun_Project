@@ -5,6 +5,8 @@ using UnityEngine;
 public class playerController : MonoBehaviour
 {
 
+    public GameObject footstep;
+
     // Camera
     public Camera playerCam;
 
@@ -42,6 +44,8 @@ public class playerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = true;
 
+        footstep.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -57,7 +61,18 @@ public class playerController : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        bool isRunning;
+
+        if (isRunning = Input.GetKey(KeyCode.LeftShift)) 
+        {
+            jalan();
+            isRunning = true;
+        }
+        else
+        {
+            stopJalan();
+            isRunning = false;
+        }
 
         float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
@@ -101,5 +116,15 @@ public class playerController : MonoBehaviour
         {
             playerCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(playerCam.fieldOfView, initialFOV, Time.deltaTime * cameraZoom);
         }
+    }
+
+    void jalan()
+    {
+        footstep.SetActive(true);
+    }
+
+    void stopJalan()
+    {
+        footstep.SetActive(false);
     }
 }
