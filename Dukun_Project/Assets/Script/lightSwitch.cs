@@ -26,6 +26,7 @@ public class lightSwitch : MonoBehaviour
         onOB.SetActive(false);  
         offOB.SetActive(true);
         lightOB.SetActive(false);
+        lightsText.SetActive(false);
     }
 
     // Update is called once per frame
