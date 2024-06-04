@@ -31,6 +31,7 @@ public class EnemyController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         audioSource = GetComponent<AudioSource>();
         SetDestinationToWaypoint();
+        LockYPosition(); // Lock Y position initially.
     }
 
     private void Update()
@@ -86,13 +87,21 @@ public class EnemyController : MonoBehaviour
                 }
                 break;
         }
+
+        // Lock Y position during update to ensure constant height
+        LockYPosition();
     }
 
     private void LockXRotationAndYPosition()
     {
         // Lock the rotation on the X-axis and the position on the Y-axis
-        transform.rotation = Quaternion.Euler(-90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-        transform.position = new Vector3(transform.position.x, 2.5f, transform.position.z);
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+    }
+
+    private void LockYPosition()
+    {
+        // Lock the position on the Y-axis
+        transform.position = new Vector3(transform.position.x, 11f, transform.position.z);
     }
 
     private void CheckForPlayerDetection()
@@ -127,7 +136,9 @@ public class EnemyController : MonoBehaviour
 
     private void SetDestinationToWaypoint()
     {
-        agent.SetDestination(waypoints[currentWaypointIndex].position);
+        Vector3 targetPosition = waypoints[currentWaypointIndex].position;
+        targetPosition.y = 11f; // Ensure the waypoint is at y = 11
+        agent.SetDestination(targetPosition);
         currentState = EnemyState.Walk;
         agent.speed = walkSpeed; // Set the walking speed.
         animator.enabled = true;

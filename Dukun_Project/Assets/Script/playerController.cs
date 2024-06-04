@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
-
     public GameObject footstep;
 
     // Camera
@@ -15,7 +14,7 @@ public class playerController : MonoBehaviour
     public float lookLimit = 75f;
     public float cameraRotation = 2f;
 
-    // camera zoom
+    // Camera zoom
     public int zoomFOV = 35;
     public int initialFOV;
     public float cameraZoom = 1;
@@ -24,31 +23,29 @@ public class playerController : MonoBehaviour
     // Movement
     public float walkSpeed = 3f;
     public float runSpeed = 5f;
-    public float gravity = 10f;
+    public float gravity = 20f; // Adjusted gravity
 
     // Ground
-    Vector3 moveDirection = Vector3.zero;
-    float rotationX = 0;
-    float rotationY = 0;
+    private Vector3 moveDirection = Vector3.zero;
+    private float rotationX = 0;
+    private float rotationY = 0;
 
     // Can player move
     private bool canMove = true;
 
-    CharacterController characterController;
+    private CharacterController characterController;
+
     void Start()
     {
-        //
         characterController = GetComponent<CharacterController>();
 
-        // kursor hilang
+        // Hide cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = true;
 
         footstep.SetActive(false);
-
     }
 
-    // Update is called once per frame
     void Update()
     {
         walkRun();
@@ -57,27 +54,34 @@ public class playerController : MonoBehaviour
 
     void walkRun()
     {
-        // jalan dan lari
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 right = transform.TransformDirection(Vector3.right);
-
-        bool isRunning;
-
-        if (isRunning = Input.GetKey(KeyCode.LeftShift)) 
+        if (characterController.isGrounded)
         {
-            jalan();
-            isRunning = true;
-        }
-        else
-        {
-            stopJalan();
-            isRunning = false;
+            // Walk and run
+            Vector3 forward = transform.TransformDirection(Vector3.forward);
+            Vector3 right = transform.TransformDirection(Vector3.right);
+
+            bool isRunning = false;
+            bool isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
+
+            if (isMoving && Input.GetKey(KeyCode.LeftShift))
+            {
+                jalan();
+                isRunning = true;
+            }
+            else
+            {
+                stopJalan();
+            }
+
+            float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
+            float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
+            moveDirection = (forward * curSpeedX) + (right * curSpeedY);
         }
 
-        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
-        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+        // Apply gravity
+        moveDirection.y -= gravity * Time.deltaTime;
 
+        // Move the character
         characterController.Move(moveDirection * Time.deltaTime);
     }
 
@@ -109,12 +113,11 @@ public class playerController : MonoBehaviour
 
         if (isZoomed)
         {
-            playerCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(playerCam.fieldOfView, zoomFOV, Time.deltaTime * cameraZoom);
-
+            playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, zoomFOV, Time.deltaTime * cameraZoom);
         }
         else
         {
-            playerCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(playerCam.fieldOfView, initialFOV, Time.deltaTime * cameraZoom);
+            playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, initialFOV, Time.deltaTime * cameraZoom);
         }
     }
 
