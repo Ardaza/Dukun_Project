@@ -114,7 +114,6 @@ public class EnemyController : MonoBehaviour
             if (hit.collider.CompareTag("Player"))
             {
                 currentState = EnemyState.Chase;
-                Debug.Log("Player detected!");
             }
         }
     }
