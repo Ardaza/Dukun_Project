@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class timer : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class timer : MonoBehaviour
         else if (remainingTime < 0)
         {
             remainingTime = 0;
+            SceneManager.LoadScene(1);
         }
        
         int menit = Mathf.FloorToInt(remainingTime / 60);

@@ -20,14 +20,17 @@ public class advancedFlashlight : MonoBehaviour
     private bool on;
     private bool off;
 
+    public GameObject flashlight;
+
 
     void Start()
     {
         light = GetComponent<Light>();
 
         off = true;
+        on = false;
         light.enabled = false;
-
+        flashlight.SetActive(false);
     }
 
 
@@ -39,6 +42,7 @@ public class advancedFlashlight : MonoBehaviour
 
         if (Input.GetButtonDown("flashlight") && off)
         {
+            flashlight.SetActive(true);
             flashON.Play();
             light.enabled = true;
             on = true;
@@ -47,6 +51,7 @@ public class advancedFlashlight : MonoBehaviour
 
         else if (Input.GetButtonDown("flashlight") && on)
         {
+            flashlight.SetActive(false);
             flashOFF.Play();
             light.enabled = false;
             on = false;

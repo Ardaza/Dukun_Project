@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class JumpscareTrigger : MonoBehaviour
 {
@@ -11,12 +13,16 @@ public class JumpscareTrigger : MonoBehaviour
         canvas.SetActive(false); // Menyembunyikan canvas di awal
     }
 
-    private void OnTriggerEnter(Collider other)
+    private IEnumerator OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             canvas.SetActive(true); // Menampilkan canvas saat pemain masuk ke trigger
+            yield return new WaitForSeconds(4f);
             videoPlayer.Play(); // Memutar video jumpscare
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            SceneManager.LoadScene(0);
         }
     }
 }
