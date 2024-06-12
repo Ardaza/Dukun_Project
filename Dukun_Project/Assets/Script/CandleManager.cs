@@ -13,7 +13,7 @@ public class CandleManager : MonoBehaviour
         litCandleCount++;
 
         // Check if at least one candle has been lit
-        if (litCandleCount > 0)
+        if (litCandleCount == 5)
         {
             // Load the scene with build index 1
             SceneManager.LoadScene(1);
