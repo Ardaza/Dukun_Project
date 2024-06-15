@@ -33,7 +33,7 @@ public class LevelChager : MonoBehaviour
 
     public void Play()
     {
-        FadeToLevel(4);
+        FadeToLevel(5);
         animator.SetTrigger("FadeOut");
     }
 

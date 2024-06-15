@@ -16,7 +16,7 @@ public class CandleManager : MonoBehaviour
         if (litCandleCount == 5)
         {
             // Load the scene with build index 1
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(6);
         }
     }
 }

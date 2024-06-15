@@ -20,19 +20,19 @@ public class Lighter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && lighter.activeInHierarchy)
+        if (Input.GetButtonDown("T") && lighter.activeInHierarchy)
         {
             flames.SetActive(true);
             lighterSound.Play();
             isOn = true;
         }
 
-        else if (Input.GetButtonDown("Fire1") && isOn)
+        else if (Input.GetButtonDown("T") && isOn)
         {
             return;
         }
 
-        if (Input.GetButtonDown("Fire2") && lighter.activeInHierarchy && isOn)
+        if (Input.GetButtonDown("Y") && lighter.activeInHierarchy && isOn)
         {
             flames.SetActive(false);
             isOn = false;
