@@ -107,15 +107,16 @@ public class PauseMenu : MonoBehaviour
     }
 
     // Go to the main menu
-    public void GoToMainMenu()
+    public void Settings()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(3);
     }
 
     // Quit the application
-    public void Quit()
+    public void MainMenu()
     {
-        Application.Quit();
+        Time.timeScale = 1;
+        SceneManager.LoadScene(1);
     }
 }
