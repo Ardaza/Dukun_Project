@@ -44,14 +44,14 @@ public class AudioManager : MonoBehaviour
             // Hancurkan AudioManager jika di scene 5 atau 6
             Destroy(gameObject);
         }
-        else if (sceneBuildIndex == 1)
+        else if (sceneBuildIndex == 4)
         {
             // Memainkan lagu gameplay jika di scene 1
             musicSource.clip = gameplayBGM;
             musicSource.Play();
             DontDestroyOnLoad(gameObject);
         }
-        else if (sceneBuildIndex == 4)
+        else if (sceneBuildIndex == 0 || sceneBuildIndex == 1)
         {
             // Memainkan lagu default jika di scene 4
             musicSource.clip = defaultBGM;

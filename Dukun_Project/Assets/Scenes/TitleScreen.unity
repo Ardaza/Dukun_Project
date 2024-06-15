@@ -759,7 +759,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1128774384}
-  bgm: {fileID: 8300000, guid: f8d34e1117fc91f45a9d30e3b2927692, type: 3}
+  gameplayBGM: {fileID: 8300000, guid: 2602ad58bbd5f30479227ffa6e5ea304, type: 3}
+  defaultBGM: {fileID: 8300000, guid: f8d34e1117fc91f45a9d30e3b2927692, type: 3}
 --- !u!4 &957371333
 Transform:
   m_ObjectHideFlags: 0
