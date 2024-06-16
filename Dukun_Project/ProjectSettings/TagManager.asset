@@ -8,6 +8,7 @@ TagManager:
   - Kunti
   - Enemy
   - ground
+  - canPickUp
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - Water
   - UI
   - PP
-  - 
+  - holdLayer
   - 
   - 
   - 
