@@ -8,6 +8,8 @@ public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenu;
     public GameObject player; // Reference to the player GameObject
+    public GameObject additionalObject1; // Reference to the first additional GameObject
+    public GameObject additionalObject2; // Reference to the second additional GameObject
     public static bool isPaused;
 
     private List<RawImage[]> rawImageArrays = new List<RawImage[]>(); // List of arrays to store found RawImage components
@@ -78,6 +80,16 @@ public class PauseMenu : MonoBehaviour
                 }
             }
         }
+
+        // Hide the additional GameObjects when the game is paused
+        if (additionalObject1 != null)
+        {
+            additionalObject1.SetActive(false);
+        }
+        if (additionalObject2 != null)
+        {
+            additionalObject2.SetActive(false);
+        }
     }
 
     // Resume the game
@@ -103,6 +115,16 @@ public class PauseMenu : MonoBehaviour
                     }
                 }
             }
+        }
+
+        // Show the additional GameObjects when the game is resumed
+        if (additionalObject1 != null)
+        {
+            additionalObject1.SetActive(true);
+        }
+        if (additionalObject2 != null)
+        {
+            additionalObject2.SetActive(true);
         }
     }
 

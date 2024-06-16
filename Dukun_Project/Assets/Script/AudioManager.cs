@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioSource musicSource;
     public AudioClip gameplayBGM;
     public AudioClip defaultBGM;
+    public VideoPlayer videoPlayer; // Referensi ke VideoPlayer
 
     private static AudioManager instance;
 
@@ -25,6 +27,11 @@ public class AudioManager : MonoBehaviour
     {
         // Memutuskan lagu berdasarkan scene yang aktif saat dimulai
         PlayMusicForScene(SceneManager.GetActiveScene().buildIndex);
+        if (videoPlayer != null)
+        {
+            videoPlayer.loopPointReached += OnVideoEnd; // Tambahkan event listener
+            videoPlayer.started += OnVideoStart; // Tambahkan event listener
+        }
     }
 
     private void OnEnable()
@@ -37,6 +44,11 @@ public class AudioManager : MonoBehaviour
     {
         // Melepaskan pendengar untuk event scene loaded untuk menghindari memory leak
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        if (videoPlayer != null)
+        {
+            videoPlayer.loopPointReached -= OnVideoEnd; // Lepaskan event listener
+            videoPlayer.started -= OnVideoStart; // Lepaskan event listener
+        }
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -55,7 +67,7 @@ public class AudioManager : MonoBehaviour
         }
         else if (sceneBuildIndex == 4)
         {
-            // Memainkan lagu gameplay jika di scene 1
+            // Memainkan lagu gameplay jika di scene 4
             if (musicSource.clip != gameplayBGM)
             {
                 musicSource.clip = gameplayBGM;
@@ -64,7 +76,7 @@ public class AudioManager : MonoBehaviour
         }
         else if (sceneBuildIndex == 0 || sceneBuildIndex == 1)
         {
-            // Memainkan lagu default jika di scene 4
+            // Memainkan lagu default jika di scene 0 atau 1
             if (musicSource.clip != defaultBGM)
             {
                 musicSource.clip = defaultBGM;
@@ -75,6 +87,24 @@ public class AudioManager : MonoBehaviour
         {
             // Stop musik untuk scene lainnya
             DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    void OnVideoStart(VideoPlayer vp)
+    {
+        // Berhenti musik saat video dimulai
+        if (musicSource.isPlaying)
+        {
+            musicSource.Pause();
+        }
+    }
+
+    void OnVideoEnd(VideoPlayer vp)
+    {
+        // Lanjutkan musik saat video selesai diputar
+        if (!musicSource.isPlaying)
+        {
+            musicSource.Play();
         }
     }
 }
