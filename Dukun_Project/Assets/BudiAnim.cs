@@ -8,6 +8,7 @@ public class BudiAnim : MonoBehaviour
     private bool isWalking;
     private bool isRunning;
     private bool isInteracting;
+    private bool isUsingLighter;  // New boolean for lighter animation
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,7 @@ public class BudiAnim : MonoBehaviour
         isWalking = false;
         isRunning = false;
         isInteracting = false;
+        isUsingLighter = false;  // Initialize lighter boolean
     }
 
     // Update is called once per frame
@@ -29,7 +31,7 @@ public class BudiAnim : MonoBehaviour
     void HandleMovementInput()
     {
         // Reset walking and running if interacting
-        if (isInteracting)
+        if (isInteracting || isUsingLighter)  // Include lighter condition
         {
             isWalking = false;
             isRunning = false;
@@ -68,6 +70,16 @@ public class BudiAnim : MonoBehaviour
         {
             isInteracting = false;
         }
+
+        // Check for lighter input (Q)
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            isUsingLighter = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.Q))
+        {
+            isUsingLighter = false;
+        }
     }
 
     void UpdateAnimator()
@@ -75,5 +87,6 @@ public class BudiAnim : MonoBehaviour
         animator.SetBool("walk", isWalking);
         animator.SetBool("run", isRunning);
         animator.SetBool("interact", isInteracting);
+        animator.SetBool("lighter", isUsingLighter);  // Update lighter boolean
     }
 }

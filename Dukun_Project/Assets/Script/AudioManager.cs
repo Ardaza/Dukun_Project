@@ -7,8 +7,17 @@ public class AudioManager : MonoBehaviour
     public AudioClip gameplayBGM;
     public AudioClip defaultBGM;
 
+    private static AudioManager instance;
+
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
@@ -47,16 +56,20 @@ public class AudioManager : MonoBehaviour
         else if (sceneBuildIndex == 4)
         {
             // Memainkan lagu gameplay jika di scene 1
-            musicSource.clip = gameplayBGM;
-            musicSource.Play();
-            DontDestroyOnLoad(gameObject);
+            if (musicSource.clip != gameplayBGM)
+            {
+                musicSource.clip = gameplayBGM;
+                musicSource.Play();
+            }
         }
         else if (sceneBuildIndex == 0 || sceneBuildIndex == 1)
         {
             // Memainkan lagu default jika di scene 4
-            musicSource.clip = defaultBGM;
-            musicSource.Play();
-            DontDestroyOnLoad(gameObject);
+            if (musicSource.clip != defaultBGM)
+            {
+                musicSource.clip = defaultBGM;
+                musicSource.Play();
+            }
         }
         else
         {

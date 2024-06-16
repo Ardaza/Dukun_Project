@@ -6,10 +6,10 @@ public class Lighter : MonoBehaviour
 {
     public GameObject lighter;
     public GameObject flames;
-
     public AudioSource lighterSound;
 
-    public bool isOn;
+    private bool isOn;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,22 +20,19 @@ public class Lighter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("T") && lighter.activeInHierarchy)
+        if (Input.GetButtonDown("Q") && lighter.activeInHierarchy)
         {
-            flames.SetActive(true);
-            lighterSound.Play();
-            isOn = true;
-        }
-
-        else if (Input.GetButtonDown("T") && isOn)
-        {
-            return;
-        }
-
-        if (Input.GetButtonDown("Y") && lighter.activeInHierarchy && isOn)
-        {
-            flames.SetActive(false);
-            isOn = false;
+            if (isOn)
+            {
+                flames.SetActive(false);
+                isOn = false;
+            }
+            else
+            {
+                flames.SetActive(true);
+                lighterSound.Play();
+                isOn = true;
+            }
         }
     }
 }
