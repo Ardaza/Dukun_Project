@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class playerController : MonoBehaviour
 {
@@ -33,7 +34,18 @@ public class playerController : MonoBehaviour
     // Can player move
     private bool canMove = true;
 
+    // Energy bar
+    public Slider energyBar;
+    public float maxEnergy = 100f;
+    private float currentEnergy;
+    public float sprintEnergyConsumption = 10f;
+    public float energyRegenRate = 5f;
+    private bool isRunning = false;
+
     private CharacterController characterController;
+
+    // Animator for the other object
+    public Animator otherObjectAnimator;
 
     void Start()
     {
@@ -44,12 +56,21 @@ public class playerController : MonoBehaviour
         Cursor.visible = true;
 
         footstep.SetActive(false);
+
+        // Initialize energy
+        currentEnergy = maxEnergy;
+        energyBar.maxValue = maxEnergy;
+        energyBar.value = currentEnergy;
     }
 
     void Update()
     {
-        walkRun();
+        if (canMove)
+        {
+            walkRun();
+        }
         cameraMovement();
+        UpdateEnergy();
     }
 
     void walkRun()
@@ -60,21 +81,23 @@ public class playerController : MonoBehaviour
             Vector3 forward = transform.TransformDirection(Vector3.forward);
             Vector3 right = transform.TransformDirection(Vector3.right);
 
-            bool isRunning = false;
             bool isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
 
-            if (isMoving && Input.GetKey(KeyCode.LeftShift))
+            if (isMoving && Input.GetKey(KeyCode.LeftShift) && currentEnergy > 0)
             {
                 jalan();
                 isRunning = true;
+                currentEnergy -= sprintEnergyConsumption * Time.deltaTime;
+                currentEnergy = Mathf.Clamp(currentEnergy, 0, maxEnergy);
             }
             else
             {
                 stopJalan();
+                isRunning = false;
             }
 
-            float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
-            float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
+            float curSpeedX = (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical");
+            float curSpeedY = (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal");
             moveDirection = (forward * curSpeedX) + (right * curSpeedY);
         }
 
@@ -87,19 +110,16 @@ public class playerController : MonoBehaviour
 
     void cameraMovement()
     {
-        if (canMove)
-        {
-            rotationX -= Input.GetAxis("Mouse Y") * lookSpeed;
-            rotationX = Mathf.Clamp(rotationX, -lookLimit, lookLimit);
+        rotationX -= Input.GetAxis("Mouse Y") * lookSpeed;
+        rotationX = Mathf.Clamp(rotationX, -lookLimit, lookLimit);
 
-            rotationY += Input.GetAxis("Mouse X") * lookSpeed;
+        rotationY += Input.GetAxis("Mouse X") * lookSpeed;
 
-            Quaternion targetRotationX = Quaternion.Euler(rotationX, 0, 0);
-            Quaternion targetRotationY = Quaternion.Euler(0, rotationY, 0);
+        Quaternion targetRotationX = Quaternion.Euler(rotationX, 0, 0);
+        Quaternion targetRotationY = Quaternion.Euler(0, rotationY, 0);
 
-            playerCam.transform.localRotation = Quaternion.Slerp(playerCam.transform.localRotation, targetRotationX, Time.deltaTime * cameraRotation);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotationY, Time.deltaTime * cameraRotation);
-        }
+        playerCam.transform.localRotation = Quaternion.Slerp(playerCam.transform.localRotation, targetRotationX, Time.deltaTime * cameraRotation);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotationY, Time.deltaTime * cameraRotation);
 
         if (Input.GetButtonDown("Fire2"))
         {
@@ -121,13 +141,43 @@ public class playerController : MonoBehaviour
         }
     }
 
+    void UpdateEnergy()
+    {
+        if (!isRunning && currentEnergy < maxEnergy)
+        {
+            currentEnergy += energyRegenRate * Time.deltaTime;
+            currentEnergy = Mathf.Clamp(currentEnergy, 0, maxEnergy);
+        }
+
+        if (currentEnergy <= 0 && canMove)
+        {
+            StartCoroutine(EnergyDepleted());
+        }
+
+        energyBar.value = currentEnergy;
+    }
+
+    IEnumerator EnergyDepleted()
+    {
+        stopJalan();
+        yield return new WaitForSeconds(5);
+    }
+
     void jalan()
     {
         footstep.SetActive(true);
+        if (otherObjectAnimator != null)
+        {
+            otherObjectAnimator.SetBool("run", true);
+        }
     }
 
     void stopJalan()
     {
         footstep.SetActive(false);
+        if (otherObjectAnimator != null)
+        {
+            otherObjectAnimator.SetBool("run", false);
+        }
     }
 }

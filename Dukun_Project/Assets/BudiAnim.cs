@@ -8,7 +8,8 @@ public class BudiAnim : MonoBehaviour
     private bool isWalking;
     private bool isRunning;
     private bool isInteracting;
-    private bool isUsingLighter;  // New boolean for lighter animation
+    private bool isUsingLighter;
+    private bool isReloading;  // New boolean for reload animation
 
     // Start is called before the first frame update
     void Start()
@@ -17,21 +18,23 @@ public class BudiAnim : MonoBehaviour
         isWalking = false;
         isRunning = false;
         isInteracting = false;
-        isUsingLighter = false;  // Initialize lighter boolean
+        isUsingLighter = false;
+        isReloading = false;  // Initialize reload boolean
     }
 
     // Update is called once per frame
     void Update()
     {
-        HandleInteractionInput();  // Check for interaction first
-        HandleMovementInput();     // Then check for movement
+        HandleInteractionInput();
+        HandleMovementInput();
+        HandleReloadInput();  // Check for reload input
         UpdateAnimator();
     }
 
     void HandleMovementInput()
     {
-        // Reset walking and running if interacting
-        if (isInteracting || isUsingLighter)  // Include lighter condition
+        // Reset walking and running if interacting or using lighter
+        if (isInteracting || isUsingLighter || isReloading)  // Include reload condition
         {
             isWalking = false;
             isRunning = false;
@@ -82,11 +85,24 @@ public class BudiAnim : MonoBehaviour
         }
     }
 
+    void HandleReloadInput()
+    {
+        // Check for reload input (R)
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            isReloading = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.R))
+        {
+            isReloading = false;
+        }
+    }
+
     void UpdateAnimator()
     {
         animator.SetBool("walk", isWalking);
-        animator.SetBool("run", isRunning);
         animator.SetBool("interact", isInteracting);
-        animator.SetBool("lighter", isUsingLighter);  // Update lighter boolean
+        animator.SetBool("lighter", isUsingLighter);
+        animator.SetBool("reload", isReloading);  // Update reload boolean
     }
 }

@@ -26,4 +26,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WinCutscene.unity
     guid: 7f6cf798ac15fce46b0770b115dd502f
+  - enabled: 1
+    path: Assets/Scenes/KuntiJumpscare.unity
+    guid: 634cae1ef6a4bb24193537018fffae41
+  - enabled: 1
+    path: Assets/Scenes/TuyulJumpscare.unity
+    guid: 55244f272b586ad46a95e366f12b1881
+  - enabled: 1
+    path: Assets/Scenes/PocongJumpscare.unity
+    guid: 25c0f972b6a953549801e85c15e39ba2
   m_configObjects: {}

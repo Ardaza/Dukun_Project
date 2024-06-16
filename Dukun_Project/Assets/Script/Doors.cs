@@ -7,6 +7,7 @@ public class Doors : MonoBehaviour
     public Animator door;
     public GameObject openText;
     public AudioSource doorSound;
+    public AudioSource lockedSound; // AudioSource untuk suara pintu terkunci
 
     public bool inReach;
     public bool isLocked; // Public variable to track if the door is locked
@@ -47,6 +48,8 @@ public class Doors : MonoBehaviour
             }
             else
             {
+                // Play the locked door sound
+                lockedSound.Play();
                 // You can add a sound or UI message indicating the door is locked
                 Debug.Log("The door is locked!");
             }

@@ -1,28 +1,19 @@
 using UnityEngine;
-using UnityEngine.Video;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
-public class JumpscareTrigger : MonoBehaviour
+public class JumpsceneTrigger : MonoBehaviour
 {
-    public VideoPlayer videoPlayer;
-    public GameObject canvas;
+    // Nama scene yang ingin ditampilkan saat player menyentuh collider
+    public string sceneName;
 
-    private void Start()
+    // Method ini akan dipanggil saat ada objek yang masuk ke dalam collider
+    private void OnTriggerEnter(Collider other)
     {
-        canvas.SetActive(false); // Menyembunyikan canvas di awal
-    }
-
-    private IEnumerator OnTriggerEnter(Collider other)
-    {
+        // Memeriksa apakah objek yang masuk ke dalam collider adalah player
         if (other.CompareTag("Player"))
         {
-            canvas.SetActive(true); // Menampilkan canvas saat pemain masuk ke trigger
-            yield return new WaitForSeconds(4f);
-            videoPlayer.Play(); // Memutar video jumpscare
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            SceneManager.LoadScene(0);
+            // Memuat scene yang ditentukan
+            SceneManager.LoadScene(sceneName);
         }
     }
 }
