@@ -18,8 +18,8 @@ public class openBox : MonoBehaviour
     void Start()
     {
        inReach = false;
-        openText.SetActive(false);
-        keyMissingText.SetActive(false);
+       openText.SetActive(false);
+       keyMissingText.SetActive(false);
     }
 
     // Update is called once per frame

@@ -1,27 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using TMPro; // Add this namespace to use TextMeshPro
 
 public class Doors : MonoBehaviour
 {
     public Animator door;
-    public GameObject openText;
+    public GameObject Interact;
+    public GameObject openText; // Assuming this is your TextMeshPro UI element
+    public TextMeshProUGUI openTextTMP; // Add this line to reference your TextMeshPro component
     public AudioSource doorSound;
-    public AudioSource lockedSound; // AudioSource untuk suara pintu terkunci
-    public TextMeshProUGUI lockedText; // Reference to the TextMeshPro object
+    public AudioSource lockedSound;
+    public GameObject lockedText;
 
     public bool inReach;
-    public bool isLocked; // Public variable to track if the door is locked
-    private bool hasOpenedOnce; // Flag to check if the door has been opened for the first time
+    public bool isLocked;
+    private bool hasOpenedOnce;
 
     void Start()
     {
         inReach = false;
-        hasOpenedOnce = false; // Initialize the flag to false
-        // isLocked can now be set from the Unity Inspector, so no need to initialize it here
-        lockedText.gameObject.SetActive(false); // Ensure the locked text is initially hidden
+        hasOpenedOnce = false;
+        openText.SetActive(false); // Set openText to be inactive at the start of the game
+        openTextTMP = openText.GetComponent<TextMeshProUGUI>();
+        Interact.SetActive(false);
     }
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -29,6 +33,8 @@ public class Doors : MonoBehaviour
         {
             inReach = true;
             openText.SetActive(true);
+            Interact.SetActive(true);
+            openTextTMP.text = gameObject.name; // Set the text to the name of the GameObject
         }
     }
 
@@ -37,7 +43,9 @@ public class Doors : MonoBehaviour
         if (other.gameObject.tag == "Reach")
         {
             inReach = false;
+            Interact.SetActive(false);
             openText.SetActive(false);
+            lockedText.SetActive(false);
         }
     }
 
@@ -53,10 +61,11 @@ public class Doors : MonoBehaviour
             {
                 // Play the locked door sound
                 lockedSound.Play();
-                // Display the "locked" message
-                StartCoroutine(DisplayLockedMessage());
+                // You can add a sound or UI message indicating the door is locked
                 Debug.Log("The door is locked!");
-
+                Interact.SetActive(false);
+                openText.SetActive(false);
+                lockedText.SetActive(true);
             }
         }
         else
@@ -92,12 +101,5 @@ public class Doors : MonoBehaviour
     public void UnlockDoor()
     {
         isLocked = false;
-    }
-
-    IEnumerator DisplayLockedMessage()
-    {
-        lockedText.gameObject.SetActive(true); // Show the locked message
-        yield return new WaitForSeconds(1); // Wait for 2 seconds (or however long you want the message to be displayed)
-        lockedText.gameObject.SetActive(false); // Hide the locked message
     }
 }

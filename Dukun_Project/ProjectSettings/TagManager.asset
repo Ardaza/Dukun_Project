@@ -10,6 +10,7 @@ TagManager:
   - ground
   - canPickUp
   - Interact
+  - Fire
   layers:
   - Default
   - TransparentFX

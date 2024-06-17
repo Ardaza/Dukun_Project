@@ -18,8 +18,10 @@ public class timer : MonoBehaviour
         }
         else if (remainingTime < 0)
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             remainingTime = 0;
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(11);
         }
        
         int menit = Mathf.FloorToInt(remainingTime / 60);

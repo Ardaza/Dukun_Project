@@ -18,6 +18,8 @@ public class VideoSceneSwitcher : MonoBehaviour
 
     void OnVideoEnd(VideoPlayer vp)
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         // Berpindah ke scene berikutnya setelah video selesai diputar
         SceneManager.LoadScene(nextSceneName);
     }

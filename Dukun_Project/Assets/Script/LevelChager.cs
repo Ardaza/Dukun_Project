@@ -71,4 +71,10 @@ public class LevelChager : MonoBehaviour
         FadeToLevel(1);
         animator.SetTrigger("FadeOut");
     }
+
+    public void Retry()
+    {
+        FadeToLevel(4);
+        animator.SetTrigger("FadeOut");
+    }
 }
