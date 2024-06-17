@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - ground
   - canPickUp
+  - Interact
   layers:
   - Default
   - TransparentFX

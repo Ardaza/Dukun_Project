@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Key : MonoBehaviour
 {
-    public Doors doorScript; // Reference to the door script
-    public GameObject pickupText; // Text to display when in range to pick up the key
-    public AudioSource pickupSound; // Reference to the audio source for the pickup sound
+    public Doors doorScript;
+    public GameObject pickupText;
+    public TextMeshProUGUI pickupTextComponent;
+    public string pickupMessage = "Key";
+    public AudioSource pickupSound;
 
     private bool inReach;
 
     void Start()
     {
         inReach = false;
-        pickupText.SetActive(false); // Make sure the text is initially hidden
+        pickupText.SetActive(false);
     }
 
     void OnTriggerEnter(Collider other)
@@ -21,7 +24,8 @@ public class Key : MonoBehaviour
         if (other.gameObject.tag == "Reach")
         {
             inReach = true;
-            pickupText.SetActive(true); // Show the text when the player is in range
+            pickupText.SetActive(true);
+            pickupTextComponent.text = "[E] " + gameObject.name; // Menampilkan nama objek kunci di Hierarchy menggunakan TextMeshPro
         }
     }
 
@@ -30,7 +34,8 @@ public class Key : MonoBehaviour
         if (other.gameObject.tag == "Reach")
         {
             inReach = false;
-            pickupText.SetActive(false); // Hide the text when the player is out of range
+            pickupText.SetActive(false);
+            pickupTextComponent.text = "";
         }
     }
 
@@ -44,9 +49,9 @@ public class Key : MonoBehaviour
 
     void UnlockDoor()
     {
-        doorScript.UnlockDoor(); // Call the method to unlock the door
-        pickupText.SetActive(false); // Hide the text
-        pickupSound.Play(); // Play the pickup sound
-        Destroy(gameObject, pickupSound.clip.length); // Destroy the key object after the sound has finished playing
+        doorScript.UnlockDoor();
+        pickupText.SetActive(false);
+        pickupSound.Play();
+        Destroy(gameObject, pickupSound.clip.length);
     }
 }
