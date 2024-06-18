@@ -8,17 +8,16 @@ public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenu;
     public GameObject player; // Reference to the player GameObject
-    public GameObject additionalObject1; // Reference to the first additional GameObject
-    public GameObject additionalObject2; // Reference to the second additional GameObject
+    public GameObject[] additionalObjects; // References to additional GameObjects to be paused
     public static bool isPaused;
 
-    private List<RawImage[]> rawImageArrays = new List<RawImage[]>(); // List of arrays to store found RawImage components
+    private List<Behaviour> scriptsToPause = new List<Behaviour>(); // List of scripts to pause
 
     // Start is called before the first frame update
     void Start()
     {
         pauseMenu.SetActive(false);
-        FindRawImageArrays();
+        FindScriptsToPause();
     }
 
     // Update is called once per frame
@@ -37,21 +36,39 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    // Find all sets of RawImage components under the parent GameObject of the player
-    void FindRawImageArrays()
+    // Find all active scripts on objects under the parent GameObject of the player
+    void FindScriptsToPause()
     {
         if (player != null)
         {
             Transform parent = player.transform.parent; // Get the parent GameObject of the player
             if (parent != null)
             {
-                // Get all RawImage components under the parent GameObject and store them in arrays
-                RawImage[] rawImages1 = parent.GetComponentsInChildren<RawImage>();
-                rawImageArrays.Add(rawImages1);
+                // Get all active scripts under the parent GameObject and store them in the list
+                Behaviour[] behaviours = parent.GetComponentsInChildren<Behaviour>(true);
+                foreach (Behaviour behaviour in behaviours)
+                {
+                    if (behaviour.enabled)
+                    {
+                        scriptsToPause.Add(behaviour);
+                    }
+                }
+            }
+        }
 
-                // Add more arrays if needed
-                // RawImage[] rawImages2 = parent.GetComponentsInChildren<RawImage>();
-                // rawImageArrays.Add(rawImages2);
+        // Add scripts of additional GameObjects to the list
+        foreach (GameObject obj in additionalObjects)
+        {
+            if (obj != null)
+            {
+                Behaviour[] behaviours = obj.GetComponentsInChildren<Behaviour>(true);
+                foreach (Behaviour behaviour in behaviours)
+                {
+                    if (behaviour.enabled)
+                    {
+                        scriptsToPause.Add(behaviour);
+                    }
+                }
             }
         }
     }
@@ -65,30 +82,10 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Hide all RawImages when the game is paused
-        foreach (RawImage[] rawImages in rawImageArrays)
+        // Disable all active scripts when the game is paused
+        foreach (Behaviour behaviour in scriptsToPause)
         {
-            if (rawImages != null)
-            {
-                foreach (RawImage rawImage in rawImages)
-                {
-                    // Check if the GameObject is a RawImage before hiding it
-                    if (rawImage.gameObject.GetComponent<RawImage>() != null)
-                    {
-                        rawImage.gameObject.SetActive(false);
-                    }
-                }
-            }
-        }
-
-        // Hide the additional GameObjects when the game is paused
-        if (additionalObject1 != null)
-        {
-            additionalObject1.SetActive(false);
-        }
-        if (additionalObject2 != null)
-        {
-            additionalObject2.SetActive(false);
+            behaviour.enabled = false;
         }
     }
 
@@ -101,30 +98,10 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = true;
 
-        // Show all RawImages when the game is resumed
-        foreach (RawImage[] rawImages in rawImageArrays)
+        // Enable all scripts that were disabled when the game was paused
+        foreach (Behaviour behaviour in scriptsToPause)
         {
-            if (rawImages != null)
-            {
-                foreach (RawImage rawImage in rawImages)
-                {
-                    // Check if the GameObject is a RawImage before showing it
-                    if (rawImage.gameObject.GetComponent<RawImage>() != null)
-                    {
-                        rawImage.gameObject.SetActive(true);
-                    }
-                }
-            }
-        }
-
-        // Show the additional GameObjects when the game is resumed
-        if (additionalObject1 != null)
-        {
-            additionalObject1.SetActive(true);
-        }
-        if (additionalObject2 != null)
-        {
-            additionalObject2.SetActive(true);
+            behaviour.enabled = true;
         }
     }
 

@@ -11,6 +11,7 @@ public class EnemyController : MonoBehaviour
     public AudioClip idleSound;
     public AudioClip walkingSound;
     public AudioClip chasingSound;
+    public float rotationSpeed = 5f; // Speed of rotation towards the player.
 
     private int currentWaypointIndex = 0;
     private NavMeshAgent agent;
@@ -31,14 +32,10 @@ public class EnemyController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         audioSource = GetComponent<AudioSource>();
         SetDestinationToWaypoint();
-        LockYPosition(); // Lock Y position initially.
     }
 
     private void Update()
     {
-        // Lock X rotation and Y position
-        LockXRotationAndYPosition();
-
         switch (currentState)
         {
             case EnemyState.Idle:
@@ -70,38 +67,32 @@ public class EnemyController : MonoBehaviour
                 break;
 
             case EnemyState.Chase:
-                idleTimer = 0f;
                 agent.speed = chaseSpeed; // Set the chase speed.
                 agent.SetDestination(player.position);
-                isChasingAnimation = true; // Set to true in chase state.
                 animator.SetBool("IsChasing", true); // Set IsChasing to true in chase state.
 
                 // Play chasing sound.
                 PlaySound(chasingSound);
+
+                // Rotate towards the player.
+                RotateTowardsPlayer();
 
                 // Check if the player is out of sight and go back to the walk state.
                 if (Vector3.Distance(transform.position, player.position) > sightDistance)
                 {
                     currentState = EnemyState.Walk;
                     agent.speed = walkSpeed; // Restore walking speed.
+                    SetDestinationToWaypoint(); // Ensure AI goes back to waypoint path
                 }
                 break;
         }
-
-        // Lock Y position during update to ensure constant height
-        LockYPosition();
     }
 
-    private void LockXRotationAndYPosition()
+    private void RotateTowardsPlayer()
     {
-        // Lock the rotation on the X-axis and the position on the Y-axis
-        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-    }
-
-    private void LockYPosition()
-    {
-        // Lock the position on the Y-axis
-        transform.position = new Vector3(transform.position.x, 11f, transform.position.z);
+        Vector3 direction = (player.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
 
     private void CheckForPlayerDetection()
@@ -114,6 +105,7 @@ public class EnemyController : MonoBehaviour
             if (hit.collider.CompareTag("Player"))
             {
                 currentState = EnemyState.Chase;
+                agent.speed = chaseSpeed; // Set speed immediately when transitioning to chase.
             }
         }
     }
@@ -135,18 +127,9 @@ public class EnemyController : MonoBehaviour
 
     private void SetDestinationToWaypoint()
     {
-        Vector3 targetPosition = waypoints[currentWaypointIndex].position;
-        targetPosition.y = 11f; // Ensure the waypoint is at y = 11
-        agent.SetDestination(targetPosition);
+        agent.SetDestination(waypoints[currentWaypointIndex].position);
         currentState = EnemyState.Walk;
         agent.speed = walkSpeed; // Set the walking speed.
         animator.enabled = true;
     }
-
-    // Draw a green raycast line at all times and switch to red when the player is detected.
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = currentState == EnemyState.Chase ? Color.red : Color.green;
-    //    Gizmos.DrawLine(transform.position, player.position);
-    //}
 }

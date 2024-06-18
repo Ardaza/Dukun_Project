@@ -10,17 +10,19 @@ Material:
   m_Name: wadah 3
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 2100000, guid: 8518f000d6c20e548b2f1d52fc641504, type: 2}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ModifiedSerializedProperties: 16
+  m_ValidKeywords:
+  - _ALPHATEST_ON
+  - _SPECULAR_SETUP
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2450
   stringTagMap:
-    RenderType: Opaque
+    RenderType: TransparentCutout
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _Cull
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -34,8 +36,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaClip: 1
+    - _AlphaToMask: 1
     - _Glossiness: 0.5
-    - _Smoothness: 0.5
+    - _Smoothness: 0
+    - _WorkflowMode: 0
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &1179699077552009626
