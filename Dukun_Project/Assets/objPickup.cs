@@ -44,6 +44,7 @@ public class objPickup : MonoBehaviour
                     // Pick up the object
                     objTransform.parent = cameraTrans;
                     objRigidbody.useGravity = false;
+                    objRigidbody.isKinematic = true; // Set isKinematic to true when picked up
                     pickedup = true;
                 }
                 else
@@ -51,6 +52,7 @@ public class objPickup : MonoBehaviour
                     // Drop the object
                     objTransform.parent = null;
                     objRigidbody.useGravity = true;
+                    objRigidbody.isKinematic = false; // Set isKinematic to false when dropped
                     pickedup = false;
                 }
             }
@@ -60,6 +62,7 @@ public class objPickup : MonoBehaviour
                 // Throw the object
                 objTransform.parent = null;
                 objRigidbody.useGravity = true;
+                objRigidbody.isKinematic = false; // Ensure isKinematic is false before throwing
                 objRigidbody.velocity = cameraTrans.forward * throwAmount * Time.deltaTime;
                 pickedup = false;
             }
