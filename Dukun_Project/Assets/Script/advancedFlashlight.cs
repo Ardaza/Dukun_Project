@@ -78,8 +78,8 @@ public class advancedFlashlight : MonoBehaviour
 
         if (Input.GetButtonDown("reload") && batteries >= 1)
         {
-            batteries -= 0.5f;
-            lifetime += 50;
+            batteries -= 1f;
+            lifetime += 100;
         }
 
         if (Input.GetButtonDown("reload") && batteries == 0)

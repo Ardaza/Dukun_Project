@@ -730,8 +730,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1923246937}
-  gameplayBGM: {fileID: 8300000, guid: 2602ad58bbd5f30479227ffa6e5ea304, type: 3}
-  defaultBGM: {fileID: 8300000, guid: f8d34e1117fc91f45a9d30e3b2927692, type: 3}
+  gameplayBGM: {fileID: 8300000, guid: 9619e5cccadd3fc46a6495e80a2dcc31, type: 3}
+  defaultBGM: {fileID: 8300000, guid: ad338af95dad3c947a36fc78f56aa505, type: 3}
   videoPlayer: {fileID: 0}
 --- !u!4 &1183662436
 Transform:
@@ -1358,7 +1358,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
