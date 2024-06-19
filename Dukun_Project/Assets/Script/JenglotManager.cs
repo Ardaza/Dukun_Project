@@ -32,7 +32,7 @@ public class JenglotManager : MonoBehaviour
         Debug.Log("Threshold reached! Changing scene...");
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        SceneManager.LoadScene("Win");
+        SceneManager.LoadScene("WinCutscene");
     }
 
     // Method to update the threshold text
