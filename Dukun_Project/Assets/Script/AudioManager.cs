@@ -60,7 +60,7 @@ public class AudioManager : MonoBehaviour
     void PlayMusicForScene(int sceneBuildIndex)
     {
         // Memutuskan lagu berdasarkan sceneBuildIndex
-        if (sceneBuildIndex == 5 || sceneBuildIndex == 6 || sceneBuildIndex == 10 || sceneBuildIndex == 11)
+        if (sceneBuildIndex == 5 || sceneBuildIndex == 6 )
         {
             // Hancurkan AudioManager jika di scene 5 atau 6
             Destroy(gameObject);
@@ -74,7 +74,7 @@ public class AudioManager : MonoBehaviour
                 musicSource.Play();
             }
         }
-        else if (sceneBuildIndex == 0 || sceneBuildIndex == 1)
+        else if (sceneBuildIndex == 0 || sceneBuildIndex == 1 || sceneBuildIndex == 10 || sceneBuildIndex == 11)
         {
             // Memainkan lagu default jika di scene 0 atau 1
             if (musicSource.clip != defaultBGM)

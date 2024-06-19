@@ -9,6 +9,7 @@ public class objPickup : MonoBehaviour
     public bool interactable, pickedup;
     public Rigidbody objRigidbody;
     public float throwAmount;
+    public Vector3 pickupOffset = new Vector3(0, 0, 2f); // Offset to adjust the position of the object when picked up
 
     void OnTriggerStay(Collider other)
     {
@@ -42,30 +43,46 @@ public class objPickup : MonoBehaviour
                 if (!pickedup)
                 {
                     // Pick up the object
-                    objTransform.parent = cameraTrans;
-                    objRigidbody.useGravity = false;
-                    objRigidbody.isKinematic = true; // Set isKinematic to true when picked up
-                    pickedup = true;
+                    PickUpObject();
                 }
                 else
                 {
                     // Drop the object
-                    objTransform.parent = null;
-                    objRigidbody.useGravity = true;
-                    objRigidbody.isKinematic = false; // Set isKinematic to false when dropped
-                    pickedup = false;
+                    DropObject();
                 }
             }
 
             if (pickedup && Input.GetMouseButtonDown(1))
             {
                 // Throw the object
-                objTransform.parent = null;
-                objRigidbody.useGravity = true;
-                objRigidbody.isKinematic = false; // Ensure isKinematic is false before throwing
-                objRigidbody.velocity = cameraTrans.forward * throwAmount * Time.deltaTime;
-                pickedup = false;
+                ThrowObject();
             }
         }
+    }
+
+    void PickUpObject()
+    {
+        objTransform.parent = cameraTrans;
+        objTransform.localPosition = pickupOffset; // Adjust the position with the offset
+        objRigidbody.useGravity = false;
+        objRigidbody.isKinematic = true; // Set isKinematic to true when picked up
+        pickedup = true;
+    }
+
+    void DropObject()
+    {
+        objTransform.parent = null;
+        objRigidbody.useGravity = true;
+        objRigidbody.isKinematic = false; // Set isKinematic to false when dropped
+        pickedup = false;
+    }
+
+    void ThrowObject()
+    {
+        objTransform.parent = null;
+        objRigidbody.useGravity = true;
+        objRigidbody.isKinematic = false; // Ensure isKinematic is false before throwing
+        objRigidbody.velocity = cameraTrans.forward * throwAmount;
+        pickedup = false;
     }
 }
