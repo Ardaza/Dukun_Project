@@ -21,7 +21,7 @@ public class timer : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             remainingTime = 0;
-            SceneManager.LoadScene(11);
+            SceneManager.LoadScene(12);
         }
        
         int menit = Mathf.FloorToInt(remainingTime / 60);

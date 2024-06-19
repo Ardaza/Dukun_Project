@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -804,8 +804,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1128774384}
-  gameplayBGM: {fileID: 8300000, guid: 2602ad58bbd5f30479227ffa6e5ea304, type: 3}
-  defaultBGM: {fileID: 8300000, guid: f8d34e1117fc91f45a9d30e3b2927692, type: 3}
+  gameplayBGM: {fileID: 8300000, guid: 9619e5cccadd3fc46a6495e80a2dcc31, type: 3}
+  defaultBGM: {fileID: 8300000, guid: ad338af95dad3c947a36fc78f56aa505, type: 3}
   videoPlayer: {fileID: 0}
 --- !u!4 &957371333
 Transform:

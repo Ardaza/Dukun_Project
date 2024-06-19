@@ -60,7 +60,7 @@ public class AudioManager : MonoBehaviour
     void PlayMusicForScene(int sceneBuildIndex)
     {
         // Memutuskan lagu berdasarkan sceneBuildIndex
-        if (sceneBuildIndex == 5 || sceneBuildIndex == 6 )
+        if (sceneBuildIndex == 5 || sceneBuildIndex == 6 || sceneBuildIndex == 12 || sceneBuildIndex == 7 || sceneBuildIndex == 8 || sceneBuildIndex == 9)
         {
             // Hancurkan AudioManager jika di scene 5 atau 6
             Destroy(gameObject);
