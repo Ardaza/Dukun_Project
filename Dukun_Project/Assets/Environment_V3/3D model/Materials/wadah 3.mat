@@ -13,7 +13,6 @@ Material:
   m_ModifiedSerializedProperties: 16
   m_ValidKeywords:
   - _ALPHATEST_ON
-  - _SPECULAR_SETUP
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -39,8 +38,8 @@ Material:
     - _AlphaClip: 1
     - _AlphaToMask: 1
     - _Glossiness: 0.5
-    - _Smoothness: 0
-    - _WorkflowMode: 0
+    - _Smoothness: 0.25
+    - _WorkflowMode: 1
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &1179699077552009626
