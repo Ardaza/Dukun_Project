@@ -7,21 +7,19 @@ public class advancedFlashlight : MonoBehaviour
 {
     public Light light;
     public TMP_Text text;
-
     public TMP_Text batteryText;
 
     public float lifetime = 100;
-
     public float batteries = 0;
 
     public AudioSource flashON;
     public AudioSource flashOFF;
+    public AudioSource reloadSound;  // Add this line
 
     private bool on;
     private bool off;
 
     public GameObject flashlight;
-
 
     void Start()
     {
@@ -32,8 +30,6 @@ public class advancedFlashlight : MonoBehaviour
         light.enabled = false;
         flashlight.SetActive(false);
     }
-
-
 
     void Update()
     {
@@ -48,7 +44,6 @@ public class advancedFlashlight : MonoBehaviour
             on = true;
             off = false;
         }
-
         else if (Input.GetButtonDown("flashlight") && on)
         {
             flashlight.SetActive(false);
@@ -80,17 +75,12 @@ public class advancedFlashlight : MonoBehaviour
         {
             batteries -= 1f;
             lifetime += 100;
-        }
-
-        if (Input.GetButtonDown("reload") && batteries == 0)
-        {
-            return;
+            reloadSound.Play();  // Add this line
         }
 
         if (batteries <= 0)
         {
             batteries = 0;
         }
-
     }
 }

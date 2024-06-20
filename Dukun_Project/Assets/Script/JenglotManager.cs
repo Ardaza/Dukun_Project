@@ -7,6 +7,7 @@ public class JenglotManager : MonoBehaviour
     private int destroyedObjectsCount = 0;
     public int destroyThreshold = 5; // Number of objects that need to be destroyed to trigger the scene change
     public TextMeshProUGUI thresholdText; // Reference to the TextMeshProUGUI component
+    public AudioSource burnAudioSource; // Reference to the AudioSource component
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class JenglotManager : MonoBehaviour
     {
         destroyedObjectsCount++;
         Debug.Log("Candle lit! Total candles: " + destroyedObjectsCount);
+        PlayBurnAudio(); // Play the burn audio
         UpdateThresholdText();
 
         if (destroyedObjectsCount >= destroyThreshold)
@@ -39,5 +41,18 @@ public class JenglotManager : MonoBehaviour
     private void UpdateThresholdText()
     {
         thresholdText.text = "Jenglot : " + destroyedObjectsCount + " / " + destroyThreshold;
+    }
+
+    // Method to play the burn audio
+    private void PlayBurnAudio()
+    {
+        if (burnAudioSource != null)
+        {
+            burnAudioSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Burn audio source not set.");
+        }
     }
 }
