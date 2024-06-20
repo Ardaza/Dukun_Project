@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // Import the SceneManagement namespace
 
 public class RandomSound : MonoBehaviour
 {
@@ -10,16 +11,25 @@ public class RandomSound : MonoBehaviour
 
     private AudioSource audioSource; // Reference to the AudioSource component
     private float timeToNextSound; // Time until the next sound plays
-    private bool isSoundPlaying; // Check if sound is playing
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        ScheduleNextSound();
+        // Check if the current scene is Scene 4
+        if (SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            audioSource = GetComponent<AudioSource>();
+            ScheduleNextSound();
+        }
+        else
+        {
+            // Disable the script if not in Scene 4
+            this.enabled = false;
+        }
     }
 
     void Update()
     {
+        // Only update if the script is enabled (i.e., in Scene 4)
         if (!audioSource.isPlaying)
         {
             timeToNextSound -= Time.deltaTime;
